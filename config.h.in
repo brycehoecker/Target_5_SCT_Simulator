@@ -1,0 +1,2 @@
+#define TargetSimulatorCMake_VERSION_MAJOR @TargetSimulatorCMake_VERSION_MAJOR@
+#define TargetSimulatorCMake_VERSION_MINOR @TargetSimulatorCMake_VERSION_MINOR@

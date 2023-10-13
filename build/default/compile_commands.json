@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/sctsim/eclipse-scientific-workspace/TargetSimulatorCMake/build/default",
+  "command": "/bin/c++  -I/home/sctsim/eclipse-scientific-workspace/TargetSimulatorCMake/build/default  -o CMakeFiles/TargetSimulatorCMake.dir/TargetSimulatorCMake.cpp.o -c /home/sctsim/eclipse-scientific-workspace/TargetSimulatorCMake/TargetSimulatorCMake.cpp",
+  "file": "/home/sctsim/eclipse-scientific-workspace/TargetSimulatorCMake/TargetSimulatorCMake.cpp"
+}
+]
