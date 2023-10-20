@@ -21,7 +21,10 @@ public:
 	T5Registers& operator=(const T5Registers &other);	// Copy assignment operator: allows one object to be assigned the values of another through a deep copy.
 	T5Registers& operator=(T5Registers &&other);		// Move assignment operator: allows one object to take on the resources of another without making a copy. (by pointing to the same resources)
 
-	void printRegisterData(unsigned int bits, string function, char RW, unsigned int defaultValue) {
+    bool setModuleNumber(uint8_t modNum);
+    uint8_t getModuleNumber();
+/*
+	void printRegisterData(unsigned int bits, string function, string RW, unsigned int defaultValue) {
         cout << "Bits: " << bits << "\nFunction: " << function << "\nR/W: " << RW << "\nDefault Value: " << defaultValue << "\n\n";
     }
 
@@ -62,11 +65,14 @@ public:
         // ... and so on for other affected registers
     }
 */
+
 private:
-	int moduleNumber;									// Number of Module should be 1-177 or 0-176
+	bool modNumberSet;
+	uint8_t moduleNumber; 				// can hold values between 0 and 255, number of Module should be 1-177 or 0-176
+	uint32_t registers[84];  			// array to store all 84 registers (0-83)
 
-	uint32_t registers[84];  							// array to store all 84 registers (0-83)
 
+	/*
 	/*
 	Master Board FPGA Memory Map Registers (32-Bit):
 	*/
@@ -75,13 +81,14 @@ private:
 		Assigned value of 0xFED000030, assigned in Firmware to highlight and track
 		incremental changes in firmware. Incremented with every firmware revision
     // Example private member for FPGA Version*/
-    struct FPGAVersion {
+/*    struct FPGAVersion {
         unsigned int bits;       // Assuming 32-bit unsigned integer for 31-0
         string function;
-        char RW;                 // 'R' or 'W' or 'RW'
+        string RW;                 // 'R' or 'W' or 'RW'
         unsigned int defaultValue;
     } fpgaVersion;
 
+};*/
     /*
 	1. Detector ID		RW
 		Bits
@@ -90,16 +97,16 @@ private:
 		7-0		CTA ID, fill CTA ID field of reported event
 	// Example private member for Detector ID
 	*/
-    struct DetectorID {
+/*    struct DetectorID {
         unsigned int bits31_16;  // Assuming 16-bit unsigned integer
         unsigned int bits15_8;   // Assuming 8-bit unsigned integer
         unsigned int bits7_0;    // Assuming 8-bit unsigned integer
         string function31_16;
         string function15_8;
         string function7_0;
-        char RW31_16;
-        char RW15_8;
-        char RW7_0;
+        string RW31_16;
+        string RW15_8;
+        string RW7_0;
         unsigned int defaultValue31_16;
         unsigned int defaultValue15_8;
         unsigned int defaultValue7_0;
@@ -110,10 +117,10 @@ private:
 		Serial number the least significant word
 	3. Serial ID MSW	R
 		Serial number the most significant word*/
-	 struct SerialIDNum {
+/*	 struct SerialIDNum {
 			unsigned int bits;
 			string function;
-			char RW;
+			string RW;
 			unsigned int defaultValue;
 		} serialIDLSW, serialIDMSW;  // LSW and MSW for Serial Number
 
@@ -129,7 +136,7 @@ private:
 		1		Underflow on summary FIFO of event data
 		0		overflow on summary FIFO of event data
 	5. Latched Status register*/
-    struct StatusRegister {
+/*    struct StatusRegister {
         unsigned int bits31_16;
         unsigned int bits15_12;
         unsigned int bit11;
@@ -146,14 +153,14 @@ private:
         string function8_2;
         string function1;
         string function0;
-        char RW31_16;
-        char RW15_12;
-        char RW11;
-        char RW10;
-        char RW9;
-        char RW8_2;
-        char RW1;
-        char RW0;
+        string RW31_16;
+        string RW15_12;
+        string RW11;
+        string RW10;
+        string RW9;
+        string RW8_2;
+        string RW1;
+        string RW0;
         unsigned int defaultValue31_16;
         unsigned int defaultValue15_12;
         unsigned int defaultValue11;
@@ -175,10 +182,10 @@ private:
 	13. Latched FIFO Status register ASIC 3
 	14. Trigger FIFO Status register
 	*/
-    struct FIFOStatusRegister {
+/*    struct FIFOStatusRegister {
         unsigned int bits31_0;
         string function31_0;
-        char RW31_0;
+        string RW31_0;
         unsigned int defaultValue31_0;
     } fifoStatusASIC0, fifoStatusASIC1, fifoStatusASIC2, fifoStatusASIC3,
       latchedFIFOStatusASIC0, latchedFIFOStatusASIC1, latchedFIFOStatusASIC2, latchedFIFOStatusASIC3,
@@ -187,93 +194,91 @@ private:
     /*
 	15. Trigger statistics
 	*/
-    struct TriggerStatisticsRegister {
+/*    struct TriggerStatisticsRegister {
         unsigned int bits31_16;
         string function31_16;
-        char RW31_16;
+        string RW31_16;
         unsigned int defaultValue31_16;
 
         unsigned int bits15_0;
         string function15_0;
-        char RW15_0;
+        string RW15_0;
         unsigned int defaultValue15_0;
     } triggerStatistics;
 
     /*
 	16. TACK statistic
 	*/
-	struct TackStatisticsRegister {
+/*	struct TackStatisticsRegister {
         unsigned int bits31_24;
         string function31_24;
-        char RW31_24;
+        string RW31_24;
         unsigned int defaultValue31_24;
 
         unsigned int bits23_16;
         string function23_16;
-        char RW23_16;
+        string RW23_16;
         unsigned int defaultValue23_16;
 
         unsigned int bits15_8;
         string function15_8;
-        char RW15_8;
+        string RW15_8;
         unsigned int defaultValue15_8;
 
         unsigned int bits7_0;
         string function7_0;
-        char RW7_0;
+        string RW7_0;
         unsigned int defaultValue7_0;
     } tackStatistics;
 
     /*
 	17. FIFO statistics
 	*/
-    struct FIFOStatisticsRegister {
+/*    struct FIFOStatisticsRegister {
         unsigned int bits31_16;
         string function31_16;
-        char RW31_16;
+        string RW31_16;
         unsigned int defaultValue31_16;
 
         unsigned int bits15_0;
         string function15_0;
-        char RW15_0;
+        string RW15_0;
         unsigned int defaultValue15_0;
     } fifoStatistics;
 
     /*
 	18. Packet statistics
 	*/
-    struct PacketStatisticsRegister {
+/*    struct PacketStatisticsRegister {
         unsigned int bits31_16;
         string function31_16;
-        char RW31_16;
+        string RW31_16;
         unsigned int defaultValue31_16;
 
         unsigned int bits15_0;
         string function15_0;
-        char RW15_0;
+        string RW15_0;
         unsigned int defaultValue15_0;
     } packetStatistics;
 
     /*
 	19. Command/Ramp count statistics
 	*/
-    struct RampCountStatisticsRegister {
+/*    struct RampCountStatisticsRegister {
         unsigned int bits31_16;
         string function31_16;
-        char RW31_16;
+        string RW31_16;
         unsigned int defaultValue31_16;
 
         unsigned int bits15_0;
         string function15_0;
-        char RW15_0;
+        string RW15_0;
         unsigned int defaultValue15_0;
     } rampCountStatistics;
 
     /*
     20. ADC_control_reg
 	*/
-
-
     /*
 	21. ADC_config_reg
 
@@ -528,6 +533,7 @@ private:
 
 
 	 */
-};
+//
+};//end of T5Registersclass
 
 #endif /* T5REGISTERS_H_ */
